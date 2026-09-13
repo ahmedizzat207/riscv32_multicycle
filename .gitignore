@@ -1,0 +1,37 @@
+# ==============================================================================
+# Git Ignore Configuration - RVBL-2 RISC-V Multicycle Processor Core
+# ==============================================================================
+
+# Simulation outputs & runtime binaries
+*.vcd
+*.vvp
+sim_*
+*.vpd
+*.fsdb
+work/
+obj_dir/
+
+# EDA & OpenLane transient scratch directories
+build/**/tmp/
+*.tmp
+*.log.tmp
+*.jou
+*.str
+.recovery/
+
+# Editor & IDE configurations
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Operating System metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class

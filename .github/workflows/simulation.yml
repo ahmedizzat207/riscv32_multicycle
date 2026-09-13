@@ -1,0 +1,66 @@
+name: RTL Simulation & Verification
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  simulation:
+    name: Verify RVBL-2 Subsystems & Top-Level Core
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Icarus Verilog
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y iverilog
+
+      - name: Run ALU Verification
+        run: |
+          iverilog -g2012 -o sim_alu design/alu/testbench/tb_alu.v design/alu/rtl/alu.v
+          vvp sim_alu
+
+      - name: Run Sequential Multiplier Verification
+        run: |
+          iverilog -g2012 -o sim_mult design/mult/testbench/tb_multiplier.v design/mult/rtl/*.v
+          vvp sim_mult
+
+      - name: Run Custom CRC Unit Verification
+        run: |
+          iverilog -g2012 -o sim_crc design/crc/testbench/tb_crc.v design/crc/rtl/*.v
+          vvp sim_crc
+
+      - name: Run Immediate Generator Verification
+        run: |
+          iverilog -g2012 -o sim_imm design/imm/testbench/tb_imm_gen.v design/imm/rtl/*.v
+          vvp sim_imm
+
+      - name: Run Branch Comparator Verification
+        run: |
+          iverilog -g2012 -o sim_branch design/branch/testbench/tb_branch_comparator.v design/branch/rtl/*.v
+          vvp sim_branch
+
+      - name: Run Load-Store Unit (LSU) Verification
+        run: |
+          iverilog -g2012 -o sim_lsu design/lsu/testbench/tb_lsu.v design/lsu/rtl/*.v
+          vvp sim_lsu
+
+      - name: Run Unified Memory Verification
+        run: |
+          iverilog -g2012 -o sim_mem design/memory/testbench/tb_unified_memory.v design/memory/rtl/*.v
+          vvp sim_mem
+
+      - name: Run Control Unit FSM Verification
+        run: |
+          iverilog -g2012 -o sim_cu design/control_unit/testbench/tb_control_unit.v design/top/rtl/stage2_control_unit.v
+          vvp sim_cu
+
+      - name: Run Top-Level Core Simulation
+        run: |
+          iverilog -g2012 -o sim_top design/top/testbench/tb_top.v design/top/rtl/rvbl2_top_all.v
+          vvp sim_top

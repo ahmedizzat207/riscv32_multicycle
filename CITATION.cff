@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use or reference this processor core in your research or design, please cite it as below."
+title: "RVBL-2: 32-bit Multicycle RISC-V Processor Core (Sky130)"
+authors:
+  - family-names: "Sidahmed Ali Tahir"
+    given-names: "Ahmed Izzat"
+  - family-names: "Ng"
+    given-names: "Kah Lok"
+  - family-names: "Gan"
+    given-names: "Shao Hng"
+  - family-names: "Tan"
+    given-names: "Jolin"
+  - family-names: "Binti Mohamad"
+    given-names: "Fatin Nuralya"
+version: 1.0.0
+date-released: 2026-09-13
+license: Apache-2.0
+repository-code: "https://github.com/ahmedizzat207/riscv32_multicycle"
+keywords:
+  - "risc-v"
+  - "multicycle"
+  - "openlane"
+  - "skywater-130nm"
+  - "asic"
+  - "hardware-accelerator"
+  - "crc"
+  - "multiplier"

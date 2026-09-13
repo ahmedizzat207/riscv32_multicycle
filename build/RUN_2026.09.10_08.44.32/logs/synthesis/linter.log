@@ -1,0 +1,99 @@
+%Warning-PINMISSING: /openlane/designs/riscv_stage2/src/riscv_stage2.v:1788:4: Cell has missing pin: 'branch_taken_i'
+ 1788 | PC blk4086_75 (
+      |    ^~~~~~~~~~
+                     ... For warning description see https://verilator.org/warn/PINMISSING?v=5.009
+                     ... Use "/* verilator lint_off PINMISSING */" and lint_on around source to disable this message.
+%Warning-PINMISSING: /openlane/designs/riscv_stage2/src/riscv_stage2.v:1825:17: Cell has missing pin: 'mem_address_i'
+ 1825 | STAGE2_LSU_UNIT blkProj15103_101 (
+      |                 ^~~~~~~~~~~~~~~~
+%Warning-WIDTHTRUNC: /openlane/designs/riscv_stage2/src/riscv_stage2.v:464:38: Bit extraction of array[2:0] requires 2 bit index, not 11 bits.
+                                                                             : ... In instance top.blkProj14999_7.blkProj14963_55.blk3902_64
+  464 |             if (i_ByteWrite[0]) r_Mem[w_Index][7:0]   <= i_Data[7:0];
+      |                                      ^
+%Warning-WIDTHTRUNC: /openlane/designs/riscv_stage2/src/riscv_stage2.v:465:38: Bit extraction of array[2:0] requires 2 bit index, not 11 bits.
+                                                                             : ... In instance top.blkProj14999_7.blkProj14963_55.blk3902_64
+  465 |             if (i_ByteWrite[1]) r_Mem[w_Index][15:8]  <= i_Data[15:8];
+      |                                      ^
+%Warning-WIDTHTRUNC: /openlane/designs/riscv_stage2/src/riscv_stage2.v:466:38: Bit extraction of array[2:0] requires 2 bit index, not 11 bits.
+                                                                             : ... In instance top.blkProj14999_7.blkProj14963_55.blk3902_64
+  466 |             if (i_ByteWrite[2]) r_Mem[w_Index][23:16] <= i_Data[23:16];
+      |                                      ^
+%Warning-WIDTHTRUNC: /openlane/designs/riscv_stage2/src/riscv_stage2.v:467:38: Bit extraction of array[2:0] requires 2 bit index, not 11 bits.
+                                                                             : ... In instance top.blkProj14999_7.blkProj14963_55.blk3902_64
+  467 |             if (i_ByteWrite[3]) r_Mem[w_Index][31:24] <= i_Data[31:24];
+      |                                      ^
+%Warning-WIDTHTRUNC: /openlane/designs/riscv_stage2/src/riscv_stage2.v:473:28: Bit extraction of array[2:0] requires 2 bit index, not 11 bits.
+                                                                             : ... In instance top.blkProj14999_7.blkProj14963_55.blk3902_64
+  473 |             o_Data <= r_Mem[w_Index];
+      |                            ^
+%Warning-UNUSEDSIGNAL: /openlane/designs/riscv_stage2/src/riscv_stage2.v:918:24: Bits of signal are not used: 'inst_i'[31:15,11:0]
+                                                                               : ... In instance top.blkProj14999_7.blk4137_103
+  918 |     input  wire [31:0] inst_i,
+      |                        ^~~~~~
+%Warning-UNUSEDSIGNAL: /openlane/designs/riscv_stage2/src/riscv_stage2.v:931:24: Bits of signal are not used: 'instr_i'[24:15,11:7]
+                                                                               : ... In instance top.blkProj14523_5.blk4197_44
+  931 |     input  wire [31:0] instr_i,
+      |                        ^~~~~~~
+%Warning-UNUSEDSIGNAL: /openlane/designs/riscv_stage2/src/riscv_stage2.v:932:24: Signal is not used: 'branch_taken_i'
+                                                                               : ... In instance top.blkProj14523_5.blk4197_44
+  932 |     input  wire        branch_taken_i,
+      |                        ^~~~~~~~~~~~~~
+%Warning-UNUSEDSIGNAL: /openlane/designs/riscv_stage2/src/riscv_stage2.v:933:24: Signal is not used: 'mult_busy_i'
+                                                                               : ... In instance top.blkProj14523_5.blk4197_44
+  933 |     input  wire        mult_busy_i,
+      |                        ^~~~~~~~~~~
+%Warning-UNUSEDSIGNAL: /openlane/designs/riscv_stage2/src/riscv_stage2.v:18:18: Bits of signal are not used: 'i_Instruction'[31:25,14:12,6:0]
+                                                                              : ... In instance top.blkProj14999_7.blk2116_47
+   18 |     input [31:0] i_Instruction,
+      |                  ^~~~~~~~~~~~~
+%Warning-UNUSEDSIGNAL: /openlane/designs/riscv_stage2/src/riscv_stage2.v:106:24: Bits of signal are not used: 'rs1_i'[23:0]
+                                                                               : ... In instance top.blkProj14999_7.blkProj14952_41.blk3875_1
+  106 |     input  wire [31:0] rs1_i,
+      |                        ^~~~~
+%Warning-UNUSEDSIGNAL: /openlane/designs/riscv_stage2/src/riscv_stage2.v:107:24: Signal is not used: 'rs2_i'
+                                                                               : ... In instance top.blkProj14999_7.blkProj14952_41.blk3875_1
+  107 |     input  wire [31:0] rs2_i,
+      |                        ^~~~~
+%Warning-UNUSEDSIGNAL: /openlane/designs/riscv_stage2/src/riscv_stage2.v:141:24: Bits of signal are not used: 'rs1_i'[15:0]
+                                                                               : ... In instance top.blkProj14999_7.blkProj14952_41.blk3876_2
+  141 |     input  wire [31:0] rs1_i,
+      |                        ^~~~~
+%Warning-UNUSEDSIGNAL: /openlane/designs/riscv_stage2/src/riscv_stage2.v:142:24: Signal is not used: 'rs2_i'
+                                                                               : ... In instance top.blkProj14999_7.blkProj14952_41.blk3876_2
+  142 |     input  wire [31:0] rs2_i,
+      |                        ^~~~~
+%Warning-UNUSEDSIGNAL: /openlane/designs/riscv_stage2/src/riscv_stage2.v:450:22: Bits of signal are not used: 'i_Address'[31:13,1:0]
+                                                                               : ... In instance top.blkProj14999_7.blkProj14963_55.blk3902_64
+  450 |   input  wire [31:0] i_Address,
+      |                      ^~~~~~~~~
+%Warning-UNUSEDSIGNAL: /openlane/designs/riscv_stage2/src/riscv_stage2.v:459:15: Bits of signal are not used: 'w_Index'[10:2]
+                                                                               : ... In instance top.blkProj14999_7.blkProj14963_55.blk3902_64
+  459 |   wire [10:0] w_Index = i_Address[12:2];  
+      |               ^~~~~~~
+%Warning-BLKSEQ: /openlane/designs/riscv_stage2/src/riscv_stage2.v:575:35: Blocking assignment '=' in sequential logic process
+                                                                         : ... Suggest using delayed assignment '<='
+  575 |                     final_product = sign_result_r ? (~accum + 1'b1) : accum;
+      |                                   ^
+%Warning-BLKSEQ: /openlane/designs/riscv_stage2/src/riscv_stage2.v:46:48: Blocking assignment '=' in sequential logic process
+                                                                        : ... Suggest using delayed assignment '<='
+   46 |                     default:    r_Registers[i] = 32'h0;
+      |                                                ^
+%Warning-BLKSEQ: /openlane/designs/riscv_stage2/src/riscv_stage2.v:44:48: Blocking assignment '=' in sequential logic process
+                                                                        : ... Suggest using delayed assignment '<='
+   44 |                     c_SP_INDEX: r_Registers[i] = c_SP_INITIAL_VALUE;
+      |                                                ^
+%Warning-BLKSEQ: /openlane/designs/riscv_stage2/src/riscv_stage2.v:45:48: Blocking assignment '=' in sequential logic process
+                                                                        : ... Suggest using delayed assignment '<='
+   45 |                     c_GP_INDEX: r_Registers[i] = c_GP_INITIAL_VALUE;
+      |                                                ^
+%Warning-BLKSEQ: /openlane/designs/riscv_stage2/src/riscv_stage2.v:52:42: Blocking assignment '=' in sequential logic process
+                                                                        : ... Suggest using delayed assignment '<='
+   52 |                 r_Registers[w_Select_Rd] = i_Data_Rd;
+      |                                          ^
+%Warning-SYNCASYNCNET: /openlane/designs/riscv_stage2/src/riscv_stage2.v:1921:14: Signal flopped as both synchronous and async: 'i_rst'
+                       /openlane/designs/riscv_stage2/src/riscv_stage2.v:1040:13: ... Location of async usage
+ 1040 |         if (rst_i) state <= S_FETCH;
+      |             ^~~~~
+                       /openlane/designs/riscv_stage2/src/riscv_stage2.v:734:13: ... Location of sync usage
+  734 |         if (i_Rst)
+      |             ^~~~~
