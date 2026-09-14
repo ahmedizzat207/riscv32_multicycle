@@ -52,7 +52,7 @@ jobs:
 
       - name: Run Unified Memory Verification
         run: |
-          iverilog -g2012 -o sim_mem design/memory/testbench/tb_unified_memory.v design/memory/rtl/*.v
+          iverilog -g2012 -o sim_mem design/memory/testbench/tb_unified_memory.v design/{memory,mux,*/rtl}/*.v
           vvp sim_mem
 
       - name: Run Control Unit FSM Verification

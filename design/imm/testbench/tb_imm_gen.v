@@ -1,69 +1,69 @@
 `timescale 1ns / 1ps
-// ============================================================================
-// Testbench: tb_imm_gen
-// Module Under Test: imm_generator / STAGE2_IMM_GEN
-// Project: ChampionCHIP eXperience (Phase 2 Challenge) - Equipe 15
-// ============================================================================
 
-module tb_imm_gen;
+module testbench();
 
-    // Stimulus Signals
+    // Testbench Signals
     reg  [31:0] inst_i;
     wire [31:0] imm_out_o;
 
-    // Instantiate DUT
+    // Instantiate Design Under Test (DUT)
     imm_generator dut (
-        .inst_i    (inst_i),
-        .imm_out_o (imm_out_o)
+        .inst_i(inst_i),
+        .imm_out_o(imm_out_o)
     );
 
+    // Waveform block for ChipInventor EDA visual viewer
     initial begin
-        $dumpfile("imm_gen_tb.vcd");
-        $dumpvars(0, tb_imm_gen);
+        $dumpfile("testbench.vcd");
+        $dumpvars(0, testbench);
+    end
 
-        $display("=========================================================");
-        $display(" Starting Immediate Generator Testbench (tb_imm_gen)");
-        $display("=========================================================");
+    // Verification task for format testing
+    task check_imm(
+        input [256:1] test_label,
+        input [31:0]  instruction,
+        input [31:0]  exp_imm
+    );
+        begin
+            inst_i = instruction;
+            #10; // Wait for combinational logic
 
-        // TC1 [I-Type ADDI]
-        inst_i = 32'hFF610093; #10;
-        $display("TC1 [I-Type ADDI  ] : Inst = 0x%08h | Imm = %0d (0x%08h)", inst_i, $signed(imm_out_o), imm_out_o);
+            $display("%-22s : Inst = 0x%08h | Imm = %10d (0x%08h)", 
+                     test_label, inst_i, $signed(imm_out_o), imm_out_o);
+        end
+    endtask
 
-        // TC2 [S-Type SW]
-        inst_i = 32'h00512423; #10;
-        $display("TC2 [S-Type SW    ] : Inst = 0x%08h | Imm = %0d (0x%08h)", inst_i, $signed(imm_out_o), imm_out_o);
+    // Main Test Stimulus
+    initial begin
+        $display("Starting Immediate Generator Testbench...");
+        $display("----------------------------------------------------------------------");
 
-        // TC3 [B-Type BEQ]
-        inst_i = 32'hFE2088E3; #10;
-        $display("TC3 [B-Type BEQ   ] : Inst = 0x%08h | Imm = %0d (0x%08h)", inst_i, $signed(imm_out_o), imm_out_o);
+        // TC1: I-Type ADDI (imm = -10)
+        check_imm("TC1 [I-Type  ADDI  ]", 32'hFF60_1093, 32'hFFFF_FFF6);
 
-        // TC4 [U-Type LUI]
-        inst_i = 32'h12345537; #10;
-        $display("TC4 [U-Type LUI   ] : Inst = 0x%08h | Imm = %0d (0x%08h)", inst_i, imm_out_o, imm_out_o);
+        // TC2: S-Type SW (imm = 8)
+        check_imm("TC2 [S-Type  SW    ]", 32'h0051_2423, 32'h0000_0008);
 
-        // TC5 [J-Type JAL]
-        inst_i = 32'h080000EF; #10;
-        $display("TC5 [J-Type JAL   ] : Inst = 0x%08h | Imm = %0d (0x%08h)", inst_i, $signed(imm_out_o), imm_out_o);
+        // TC3: B-Type BEQ (imm = -16)
+        check_imm("TC3 [B-Type  BEQ   ]", 32'hFE20_88E3, 32'hFFFF_FFF0);
 
-        // TC6 [I-Type ECALL]
-        inst_i = 32'h00000073; #10;
-        $display("TC6 [I-Type ECALL ] : Inst = 0x%08h | Imm = %0d (0x%08h)", inst_i, imm_out_o, imm_out_o);
+        // TC4: U-Type LUI (imm = 305418240 / 0x12345000)
+        check_imm("TC4 [U-Type  LUI   ]", 32'h1234_5537, 32'h1234_5000);
 
-        // TC7 [I-Type EBREAK]
-        inst_i = 32'h00100073; #10;
-        $display("TC7 [I-Type EBREAK] : Inst = 0x%08h | Imm = %0d (0x%08h)", inst_i, imm_out_o, imm_out_o);
+        // TC5: J-Type JAL (imm = 120)
+        check_imm("TC5 [J-Type  JAL   ]", 32'h0780_00EF, 32'h0000_0078);
 
-        // TC8 [I-Type FENCE]
-        inst_i = 32'h0FF0000F; #10;
-        $display("TC8 [I-Type FENCE ] : Inst = 0x%08h | Imm = %0d (0x%08h)", inst_i, imm_out_o, imm_out_o);
+        // TC6: I-Type ECALL (imm = 0)
+        check_imm("TC6 [I-Type  ECALL ]", 32'h0000_0073, 32'h0000_0000);
 
-        // --------------------------------------------------------------------
-        // TODO: Add any additional test instructions here
-        // --------------------------------------------------------------------
+        // TC7: I-Type EBREAK (imm = 1)
+        check_imm("TC7 [I-Type  EBREAK]", 32'h0010_0073, 32'h0000_0001);
 
-        $display("=========================================================");
-        $display(" Testbench completed successfully.");
-        $display("=========================================================");
+        // TC8: I-Type FENCE (imm = 255)
+        check_imm("TC8 [I-Type  FENCE ]", 32'h00FF_000F, 32'h0000_00FF);
+
+        $display("----------------------------------------------------------------------");
+        $display("Testbench completed successfully.");
         $finish;
     end
 

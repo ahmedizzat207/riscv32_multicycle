@@ -153,6 +153,8 @@ riscv32_multicycle/
 │   │   └── testbench/
 │   │       └── tb_branch_comparator.v # Branch condition testbench
 │   ├── control_unit/
+│   │   ├── rtl/
+│   │   │   └── control_unit.v     # Multicycle FSM control unit
 │   │   └── testbench/
 │   │       └── tb_control_unit.v   # Multicycle FSM state transition testbench
 │   ├── crc/

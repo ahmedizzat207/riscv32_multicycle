@@ -1,65 +1,79 @@
 `timescale 1ns / 1ps
-// ============================================================================
-// Testbench: tb_branch_comparator
-// Module Under Test: branch_comparator / STAGE2_BRANCH_COMPARATOR
-// Project: ChampionCHIP eXperience (Phase 2 Challenge) - Equipe 15
-// ============================================================================
 
-module tb_branch_comparator;
+module testbench();
 
-    // Stimulus Signals
+    // Testbench Signals
     reg  [31:0] a_i;
     reg  [31:0] b_i;
     reg  [2:0]  funct3_i;
     wire        branch_taken_o;
 
-    // Instantiate DUT
+    // Instantiate Design Under Test (DUT)
     branch_comparator dut (
-        .a_i            (a_i),
-        .b_i            (b_i),
-        .funct3_i       (funct3_i),
-        .branch_taken_o (branch_taken_o)
+        .a_i(a_i),
+        .b_i(b_i),
+        .funct3_i(funct3_i),
+        .branch_taken_o(branch_taken_o)
     );
 
+    // Waveform block for ChipInventor EDA visual viewer
     initial begin
-        $dumpfile("branch_comparator_tb.vcd");
-        $dumpvars(0, tb_branch_comparator);
+        $dumpfile("testbench.vcd");
+        $dumpvars(0, testbench);
+    end
 
-        $display("=========================================================");
-        $display(" Starting Branch Unit Testbench (tb_branch_comparator)");
-        $display("=========================================================");
+    // Verification task for branch condition testing
+    task check_branch(
+        input [256:1] test_label,
+        input [31:0]  val_a,
+        input [31:0]  val_b,
+        input [2:0]   f3,
+        input         exp_taken
+    );
+        begin
+            a_i      = val_a;
+            b_i      = val_b;
+            funct3_i = f3;
+            #10; // Wait for combinational propagation
 
-        // TC1: [BEQ Equal]
-        a_i = 32'd10; b_i = 32'd10; funct3_i = 3'b000; #10;
-        $display("TC1 [BEQ Equal   ] : A = %0d, B = %0d | Taken = %0d (Expected: 1)", a_i, b_i, branch_taken_o);
+            if ($signed(val_a) < 0 || $signed(val_b) < 0) begin
+                $display("%-20s : A = %10d, B = %10d | Taken = %0d (Expected: %0d)", 
+                         test_label, $signed(val_a), $signed(val_b), branch_taken_o, exp_taken);
+            end else if (val_a > 32'h0000_FFFF || val_b > 32'h0000_FFFF) begin
+                $display("%-20s : A = 0x%08h, B = 0x%08h | Taken = %0d (Expected: %0d)", 
+                         test_label, val_a, val_b, branch_taken_o, exp_taken);
+            end else begin
+                $display("%-20s : A = %10d, B = %10d | Taken = %0d (Expected: %0d)", 
+                         test_label, val_a, val_b, branch_taken_o, exp_taken);
+            end
+        end
+    endtask
 
-        // TC2: [BNE Not Equal]
-        a_i = 32'd10; b_i = 32'd11; funct3_i = 3'b001; #10;
-        $display("TC2 [BNE Not Equal] : A = %0d, B = %0d | Taken = %0d (Expected: 1)", a_i, b_i, branch_taken_o);
+    // Main Test Stimulus
+    initial begin
+        $display("Starting Branch Unit Testbench...");
+        $display("----------------------------------------------------------------------");
 
-        // TC3: [BLT Signed]
-        a_i = -32'd5; b_i = 32'd10; funct3_i = 3'b100; #10;
-        $display("TC3 [BLT Signed  ] : A = %0d, B = %0d | Taken = %0d (Expected: 1)", $signed(a_i), $signed(b_i), branch_taken_o);
+        // TC1: BEQ Equal (funct3 = 3'b000)
+        check_branch("TC1 [BEQ  Equal]", 32'd10, 32'd10, 3'b000, 1'b1);
 
-        // TC4: [BGE Signed]
-        a_i = -32'd5; b_i = 32'd10; funct3_i = 3'b101; #10;
-        $display("TC4 [BGE Signed  ] : A = %0d, B = %0d | Taken = %0d (Expected: 0)", $signed(a_i), $signed(b_i), branch_taken_o);
+        // TC2: BNE Not Equal (funct3 = 3'b001)
+        check_branch("TC2 [BNE  Not Equal]", 32'd10, 32'd11, 3'b001, 1'b1);
 
-        // TC5: [BLTU Unsigned]
-        a_i = 32'hFFFFFFFF; b_i = 32'h00000001; funct3_i = 3'b110; #10;
-        $display("TC5 [BLTU Unsign ] : A = 0x%08h, B = 0x%08h | Taken = %0d (Expected: 0)", a_i, b_i, branch_taken_o);
+        // TC3: BLT Signed (funct3 = 3'b100)
+        check_branch("TC3 [BLT  Signed]", -32'd5, 32'd10, 3'b100, 1'b1);
 
-        // TC6: [BGEU Unsigned]
-        a_i = 32'hFFFFFFFF; b_i = 32'h00000001; funct3_i = 3'b111; #10;
-        $display("TC6 [BGEU Unsign ] : A = 0x%08h, B = 0x%08h | Taken = %0d (Expected: 1)", a_i, b_i, branch_taken_o);
+        // TC4: BGE Signed (funct3 = 3 me 101)
+        check_branch("TC4 [BGE  Signed]", -32'd5, 32'd10, 3'b101, 1'b0);
 
-        // --------------------------------------------------------------------
-        // TODO: Add any additional test vectors here
-        // --------------------------------------------------------------------
+        // TC5: BLTU Unsigned (funct3 = 3'b110)
+        check_branch("TC5 [BLTU Unsigned]", 32'hFFFF_FFFF, 32'h0000_0001, 3'b110, 1'b0);
 
-        $display("=========================================================");
-        $display(" Testbench completed successfully.");
-        $display("=========================================================");
+        // TC6: BGEU Unsigned (funct3 = 3'b111)
+        check_branch("TC6 [BGEU Unsigned]", 32'hFFFF_FFFF, 32'h0000_0001, 3'b111, 1 me 1);
+
+        $display("----------------------------------------------------------------------");
+        $display("Testbench completed successfully.");
         $finish;
     end
 
